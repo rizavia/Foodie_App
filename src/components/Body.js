@@ -34,7 +34,7 @@ const Body = () => {
       <div>
         <input
           type="text"
-          className="p-3 ml-12 focus:bg-slate-100 border-2 rounded-l-full"
+          className="p-3 ml-14 focus:bg-slate-100 border-2 rounded-l-full"
           placeholder="Search a restaurant..."
           value={searchText}
           onChange={(e) => {
@@ -53,7 +53,7 @@ const Body = () => {
         </button>
       </div>
 
-      <div className="flex flex-wrap mx-12 static">
+      <div className="flex flex-wrap ml-14">
         {filteredRestaurants.length === 0 ? (
           <img src={not_found} />
         ) : (

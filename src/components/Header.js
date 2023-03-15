@@ -5,7 +5,7 @@ const Title = () => {
   return (
     <Link to="/">
       <img
-        className="h-28 ml-12 mt-5 mb-3"
+        className="h-28 ml-14 mt-5 mb-3"
         alt="logo"
         src={require("../logo.png")}
       />
