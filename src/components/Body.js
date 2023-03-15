@@ -1,34 +1,28 @@
 import { RestaurantCard } from "./RestaurantCard";
-import { restaurantList } from "../config";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Shimmer from "./Shimmer";
 import not_found from "../not_found.png";
-
-function filterData(searchText, allRestaurants) {
-  const filteredRestaurants = allRestaurants.filter((restaurant) =>
-    restaurant?.data?.name?.toLowerCase()?.includes(searchText.toLowerCase())
-  );
-  return filteredRestaurants;
-}
+import { filterData } from "../utils/helper";
+import { RESTAURANT_FETCH_URL } from "../config";
+import useRestaurant from "../utils/useRestaurant";
+import useOnline from "../utils/useOnline";
 
 const Body = () => {
   const [searchText, setSearchText] = useState();
-  const [allRestaurants, setAllRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
-  useEffect(() => {
-    getRestaurants();
-  }, []);
+  const allRestaurants = useRestaurant();
 
-  async function getRestaurants() {
-    const api_data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=13.0326328&lng=77.6583345&page_type=DESKTOP_WEB_LISTING"
-    );
-    const json = await api_data.json();
-    // console.log(json);
-    setAllRestaurants(json?.data?.cards?.[2]?.data?.data?.cards);
-    setFilteredRestaurants(json?.data?.cards?.[2]?.data?.data?.cards);
+  useEffect(() => {
+    setFilteredRestaurants(allRestaurants);
+  }, [allRestaurants]);
+
+  const status = useOnline();
+
+  if (!status) {
+    console.log(status);
+    return <h1>You're not connected to the internet</h1>;
   }
 
   if (!allRestaurants) return null;
@@ -37,10 +31,10 @@ const Body = () => {
     <Shimmer />
   ) : (
     <>
-      <div className="search">
+      <div>
         <input
           type="text"
-          className="search-box"
+          className="p-3 ml-12 focus:bg-slate-100 border-2 rounded-l-full"
           placeholder="Search a restaurant..."
           value={searchText}
           onChange={(e) => {
@@ -49,7 +43,7 @@ const Body = () => {
         />
 
         <button
-          className="search-btn"
+          className="bg-slate-200 p-3.5 my-7 rounded-r-full hover:bg-slate-300"
           onClick={() => {
             const data = filterData(searchText, allRestaurants);
             setFilteredRestaurants(data);
@@ -59,7 +53,7 @@ const Body = () => {
         </button>
       </div>
 
-      <div className="restaurant-list">
+      <div className="flex flex-wrap mx-12 static">
         {filteredRestaurants.length === 0 ? (
           <img src={not_found} />
         ) : (
