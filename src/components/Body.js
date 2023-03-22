@@ -8,7 +8,7 @@ import { RESTAURANT_FETCH_URL } from "../config";
 import useRestaurant from "../utils/useRestaurant";
 import useOnline from "../utils/useOnline";
 
-const Body = () => {
+const Body = ({ user }) => {
   const [searchText, setSearchText] = useState();
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
 
@@ -62,7 +62,7 @@ const Body = () => {
               to={"/restaurant/" + restaurant.data.id}
               key={restaurant.data.id}
             >
-              <RestaurantCard {...restaurant.data} />
+              <RestaurantCard {...restaurant.data} user={user} />
             </Link>
           ))
         )}
