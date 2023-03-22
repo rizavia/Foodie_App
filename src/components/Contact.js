@@ -4,8 +4,13 @@ const Section = ({ title, description }) => {
   return (
     <div className="section">
       <h2>{title}</h2>
-      <button onClick={() => setIsVisible(true)}>Show</button>
+      <button
+        onClick={() => (isVisible ? setIsVisible(false) : setIsVisible(true))}
+      >
+        {isVisible ? "Hide" : "Show"}
+      </button>
       {isVisible && <p>{description}</p>}
+      {/*short Circuiting. If isVisible is false, description won't show*/}
     </div>
   );
 };
